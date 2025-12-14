@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣诞树 | 你的专属祝福</title>
+    <!-- 使用稳定的 Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <!-- 自定义样式 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap');
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .chinese-font {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 5px #22c55e); }
+            50% { filter: drop-shadow(0 0 20px #22c55e); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .tree-glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 防止音频标签显示 */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- 雪花效果容器 -->
+    <div id="snowflakes"></div>
+    
+    <!-- 音频播放器（隐藏） -->
+    <audio id="bgMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-christmas-tree-1120.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+    
+    <div class="container mx-auto px-4 py-8">
+        <!-- 标题 -->
+        <header class="text-center mb-12">
+            <h1 class="chinese-font text-5xl md:text-7xl mb-4 bg-gradient-to-r from-green-400 via-red-400 to-yellow-400 bg-clip-text text-transparent">
+                🎄 魔法圣诞树 🎄
+            </h1>
+            <p class="text-xl text-gray-300">许下心愿，点亮属于你的圣诞奇迹</p >
+        </header>
+        
+        <div class="flex flex-col lg:flex-row gap-8 items-center justify-center">
+            <!-- 左侧：圣诞树 -->
+            <div class="lg:w-1/2 flex justify-center">
+                <div class="relative">
+                    <!-- 树 -->
+                    <div class="tree-glow">
+                        <!-- 树冠 -->
+                        <div class="relative w-64 h-96 mx-auto">
+                            <!-- 底层 -->
+                            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-48 h-24 bg-gradient-to-b from-green-700 to-green-800 clip-triangle"></div>
+                            <!-- 中层 -->
+                            <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-gradient-to-b from-green-600 to-green-700 clip-triangle"></div>
+                            <!-- 上层 -->
+                            <div class="absolute bottom-24 left-1/2 transform -translate-x-1/2 w-32 h-40 bg-gradient-to-b from-green-500 to-green-600 clip-triangle"></div>
+                            <!-- 顶层 -->
+                            <div class="absolute bottom-36 left-1/2 transform -translate-x-1/2 w-24 h-32 bg-gradient-to-b from-green-400 to-green-500 clip-triangle"></div>
+                            <!-- 树干 -->
+                            <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-8 h-16 bg-gradient-to-b from-yellow-900 to-yellow-800 rounded"></div>
+                            <!-- 星星 -->
+                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 text-4xl">⭐</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 装饰品 -->
+                    <div class="absolute top-20 left-1/2 transform -translate-x-8 text-2xl">🔴</div>
+                    <div class="absolute top-32 left-1/2 transform translate-x-4 text-2xl">🟡</div>
+                    <div class="absolute top-48 left-1/2 transform -translate-x-12 text-2xl">🔵</div>
+                    <div class="absolute top-60 left-1/2 transform translate-x-10 text-2xl">🟣</div>
+                    <div class="absolute top-80 left-1/2 transform -translate-x-6 text-2xl">🎁</div>
+                </div>
+            </div>
+            
+            <!-- 右侧：控制面板 -->
+            <div class="lg:w-1/2 space-y-8">
+                <!-- 祝福语展示 -->
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 shadow-2xl">
+                    <h2 class="chinese-font text-3xl mb-4 text-center">✨ 你的专属祝福 ✨</h2>
+                    <div id="blessingDisplay" class="text-2xl text-center min-h-[120px] flex items-center justify-center p-4 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl border border-purple-500/30">
+                        点击下方按钮，收获圣诞惊喜...
+                    </div>
+                </div>
+                
+                <!-- 祝福语生成器 -->
+                <div class="bg-gradient-to-br from-green-900/50 to-blue-900/50 rounded-2xl p-6 shadow-2xl">
+                    <h3 class="chinese-font text-2xl mb-6 text-center">🎅 生成圣诞祝福</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-lg mb-2">你的名字：</label>
+                            <input type="text" id="userName" 
+                                   class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/50 outline-none transition"
+                                   placeholder="输入你的名字..."
+                                   value="亲爱的朋友">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-lg mb-2">祝福类型：</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button class="blessing-type py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition" data-type="warm">温暖祝福</button>
+                                <button class="blessing-type py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition" data-type="funny">幽默祝福</button>
+                                <button class="blessing-type py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition" data-type="formal">正式祝福</button>
+                                <button class="blessing-type py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition" data-type="random">随机惊喜</button>
+                            </div>
+                        </div>
+                        
+                        <button id="generateBlessing" 
+                                class="w-full py-4 mt-4 bg-gradient-to-r from-red-600 to-green-600 hover:from-red-500 hover:to-green-500 rounded-xl text-xl font-bold transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                            🎄 点亮圣诞树并生成祝福 🎄
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 音乐控制 -->
+                <div class="bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-2xl p-6 shadow-2xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="chinese-font text-xl mb-2">🎵 圣诞音乐</h4>
+                            <p class="text-gray-300">让音乐伴随你的祝福</p >
+                        </div>
+                        <div class="space-x-4">
+                            <button id="playMusic" class="px-6 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
+                                ▶️ 播放
+                            </button>
+                            <button id="pauseMusic" class="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition">
+                                ⏸️ 暂停
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="0.5" 
+                               class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white">
+                        <div class="flex justify-between text-sm text-gray-400 mt-1">
+                            <span>小声</span>
+                            <span>音量</span>
+                            <span>大声</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 祝福语列表 -->
+        <div class="mt-16">
+            <h2 class="chinese-font text-3xl text-center mb-8">🎁 经典圣诞祝福 🎁</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="p-4 bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/30">
+                    <p>愿圣诞的烛光带给你祥和与喜悦，祝你的圣诞和新年充满爱和欢笑。</p >
+                </div>
+                <div class="p-4 bg-gradient-to-br from-green-900/30 to-blue-900/30 rounded-xl border border-green-500/30">
+                    <p>圣诞老人说，今年他要把最好的礼物放在你的袜子里，那就是我的祝福！</p >
+                </div>
+                <div class="p-4 bg-gradient-to-br from-red-900/30 to-yellow-900/30 rounded-xl border border-red-500/30">
+                    <p>在这温馨的节日里，祝你全家圣诞快乐，幸福安康，万事如意！</p >
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 text-center text-gray-500">
+            <p class="mb-4">✨ 愿这个圣诞带给你平安、喜乐和满满的祝福
